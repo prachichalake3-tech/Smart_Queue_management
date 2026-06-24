@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login - Smart Queue</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="login-card">
+      <h1>Admin Login</h1>
+      <p class="login-note">Enter admin username and password to access the dashboard.</p>
+
+      <form id="adminLoginForm">
+        <label for="adminUser">Username</label>
+        <input id="adminUser" type="text" placeholder="admin" autocomplete="username" required />
+
+        <label for="adminPass">Password</label>
+        <input id="adminPass" type="password" placeholder="admin123" autocomplete="current-password" required />
+
+        <div id="adminError" class="error-message" role="alert" aria-live="polite"></div>
+
+        <button type="submit" class="login-button">Login</button>
+      </form>
+
+      <a href="../index.html" class="back-link">← Back to home</a>
+    </div>
+  </div>
+
+  <script src="admin-login.js" defer></script>
+</body>
+</html>

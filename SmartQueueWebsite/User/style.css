@@ -1,0 +1,829 @@
+/* ============================================================
+   SMART QUEUE PORTAL — style.css
+   Theme   : Green & White | Modern | Mobile-First
+   Fonts   : Poppins (headings) · Nunito (body)
+   ============================================================ */
+
+/* ── 1. CSS VARIABLES (change these to retheme the whole site) ── */
+:root {
+  --green-dark:   #1b5e20;  /* deep forest green */
+  --green-main:   #2e7d32;  /* primary green */
+  --green-mid:    #388e3c;
+  --green-light:  #66bb6a;
+  --green-pale:   #e8f5e9;  /* very light green background */
+  --green-accent: #a5d6a7;
+
+  --white:        #ffffff;
+  --off-white:    #f1f8f1;
+  --text-dark:    #1a2e1a;
+  --text-mid:     #3d5a3d;
+  --text-light:   #6a8f6a;
+
+  --shadow-sm:    0 2px 8px rgba(46,125,50,.12);
+  --shadow-md:    0 6px 24px rgba(46,125,50,.18);
+  --shadow-lg:    0 16px 48px rgba(46,125,50,.22);
+
+  --radius-sm:    10px;
+  --radius-md:    18px;
+  --radius-lg:    28px;
+  --radius-pill:  999px;
+
+  --transition:   0.28s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── 2. RESET & BASE ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--green-pale);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── 3. APP WRAPPER ── */
+.app {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px 40px;
+  overflow: hidden;
+}
+
+/* ── 4. DECORATIVE BACKGROUND ORBS ── */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .35;
+  pointer-events: none;
+  z-index: 0;
+  animation: float 8s ease-in-out infinite alternate;
+}
+.orb-1 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, #a5d6a7, #66bb6a);
+  top: -120px; left: -120px;
+  animation-delay: 0s;
+}
+.orb-2 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #c8e6c9, #81c784);
+  bottom: -80px; right: -80px;
+  animation-delay: -3s;
+}
+.orb-3 {
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, #e8f5e9, #a5d6a7);
+  top: 50%; right: 10%;
+  animation-delay: -6s;
+}
+@keyframes float {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(30px) scale(1.08); }
+}
+
+/* ── 5. PAGE SYSTEM ── */
+.page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px 40px;
+
+  /* hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(30px) scale(.97);
+  transition: opacity var(--transition), transform var(--transition);
+  z-index: 1;
+}
+
+/* active page visible */
+.page.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  position: relative;
+  inset: auto;
+}
+
+/* ── 6. CARD ── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px 32px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  z-index: 2;
+  animation: cardIn .5s cubic-bezier(.4,0,.2,1) both;
+
+  /* subtle top border accent */
+  border-top: 4px solid var(--green-light);
+}
+
+@keyframes cardIn {
+  from { opacity:0; transform:translateY(24px) scale(.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* ── 7. HERO CARD (Welcome Page) ── */
+.hero-card {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.hero-icon {
+  width: 88px; height: 88px;
+  margin: 0 auto 8px;
+  animation: heroSpin 1s ease-out both;
+}
+.hero-icon svg,
+.hero-icon img {
+  width: 100%; height: 100%;
+  display: block;
+}
+
+.auth-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--green-dark);
+  margin: 10px 0 8px;
+}
+
+@keyframes heroSpin {
+  from { opacity:0; transform: rotate(-20deg) scale(.6); }
+  to   { opacity:1; transform: rotate(0) scale(1); }
+}
+
+.app-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--green-dark);
+  letter-spacing: -.5px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: var(--green-pale);
+  color: var(--green-mid);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--green-accent);
+}
+
+.hero-desc {
+  font-size: 1rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+}
+
+/* Chips row */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.chip {
+  background: var(--green-pale);
+  color: var(--green-main);
+  border: 1px solid var(--green-accent);
+  border-radius: var(--radius-pill);
+  font-size: .8rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  transition: background var(--transition), transform var(--transition);
+}
+.chip:hover {
+  background: var(--green-accent);
+  transform: translateY(-2px);
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.tab-btn {
+  background: var(--green-pale);
+  border: 1px solid var(--green-accent);
+  color: var(--green-dark);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: var(--green-main);
+  color: #fff;
+}
+
+.hero-subtitle {
+  color: var(--text-mid);
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+/* ── 8. PAGE HEADERS ── */
+.page-icon {
+  font-size: 3rem;
+  text-align: center;
+  animation: bounce .6s ease both;
+}
+@keyframes bounce {
+  0%   { transform: scale(.5); opacity:0; }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); opacity:1; }
+}
+
+.page-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  text-align: center;
+  line-height: 1.25;
+}
+
+.page-sub {
+  font-size: .93rem;
+  color: var(--text-light);
+  text-align: center;
+  margin-top: -8px;
+}
+
+/* ── 9. BUTTONS ── */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: .3px;
+  text-align: center;
+}
+.btn:active { transform: scale(.97); }
+
+/* Primary */
+.btn-primary {
+  background: linear-gradient(135deg, var(--green-mid) 0%, var(--green-dark) 100%);
+  color: var(--white);
+  box-shadow: 0 4px 14px rgba(46,125,50,.4);
+}
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(46,125,50,.5);
+  transform: translateY(-2px);
+}
+.btn-primary:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* Large primary */
+.btn-lg { padding: 16px 24px; font-size: 1.1rem; }
+
+/* Secondary (outlined green) */
+.btn-secondary {
+  background: var(--green-pale);
+  color: var(--green-main);
+  border: 2px solid var(--green-light);
+}
+.btn-secondary:hover {
+  background: var(--green-light);
+  color: var(--white);
+}
+
+/* Outline */
+.btn-outline {
+  background: transparent;
+  color: var(--green-main);
+  border: 2px solid var(--green-mid);
+}
+.btn-outline:hover { background: var(--green-pale); }
+
+/* Ghost / Back */
+.btn-ghost {
+  background: transparent;
+  color: var(--text-light);
+  font-size: .88rem;
+  padding: 8px;
+  width: auto;
+  margin: 0 auto;
+}
+.btn-ghost:hover { color: var(--green-main); }
+
+/* ── 10. INPUT FIELDS ── */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.input-group label {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--text-mid);
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  border: 2px solid var(--green-accent);
+  border-radius: var(--radius-md);
+  background: var(--off-white);
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+}
+.input-field:focus {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(102,187,106,.25);
+}
+
+/* Dropdown arrow */
+select.input-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+/* Mobile input row with +91 prefix */
+.input-row {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--green-accent);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--off-white);
+  transition: border-color var(--transition);
+}
+.input-row:focus-within { border-color: var(--green-mid); }
+
+.input-prefix {
+  background: var(--green-pale);
+  border-right: 2px solid var(--green-accent);
+  padding: 12px 12px;
+  font-weight: 700;
+  color: var(--green-dark);
+  white-space: nowrap;
+}
+.input-row .input-field {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+.input-row .input-field:focus { box-shadow: none; }
+
+/* ── 11. OTP BOX ROW ── */
+.otp-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.otp-box {
+  width: 46px;
+  height: 52px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  border: 2px solid var(--green-accent);
+  border-radius: var(--radius-sm);
+  background: var(--off-white);
+  color: var(--green-dark);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.otp-box:focus {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(102,187,106,.25);
+  transform: scale(1.08);
+}
+.otp-box.filled {
+  border-color: var(--green-main);
+  background: var(--green-pale);
+}
+
+.otp-hint {
+  font-size: .82rem;
+  color: var(--text-light);
+  text-align: center;
+  background: var(--green-pale);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+}
+
+.resend-text {
+  font-size: .82rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* ── 12. LANGUAGE GRID ── */
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.lang-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 8px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--green-accent);
+  background: var(--off-white);
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.lang-card:hover {
+  background: var(--green-pale);
+  border-color: var(--green-mid);
+  transform: translateY(-3px);
+}
+.lang-card.selected {
+  background: var(--green-pale);
+  border-color: var(--green-main);
+  color: var(--green-dark);
+  box-shadow: 0 4px 12px rgba(46,125,50,.2);
+}
+.lang-flag { font-size: 1.4rem; }
+
+/* ── 13. AVAILABILITY STATUS ── */
+.status-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--green-accent);
+  background: var(--green-pale);
+  min-height: 110px;
+  justify-content: center;
+}
+
+.status-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--green-accent);
+  border-top-color: var(--green-main);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.status-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green-dark);
+  text-align: center;
+}
+
+/* status variants */
+.status-box.available {
+  background: #e8f5e9;
+  border-color: #66bb6a;
+}
+.status-box.not-available {
+  background: #fff3e0;
+  border-color: #ffb74d;
+}
+
+.status-icon-big {
+  font-size: 3rem;
+}
+
+/* ── 14. TIME SLOT GRID ── */
+.slot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.slot-btn {
+  padding: 14px 10px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--green-accent);
+  background: var(--off-white);
+  font-family: 'Nunito', sans-serif;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--text-mid);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.slot-btn:hover:not(.disabled):not(.break-slot) {
+  background: var(--green-pale);
+  border-color: var(--green-mid);
+  transform: translateY(-2px);
+}
+.slot-btn.selected {
+  background: linear-gradient(135deg, var(--green-mid), var(--green-dark));
+  color: var(--white);
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(46,125,50,.35);
+  transform: translateY(-2px);
+}
+.slot-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+.slot-btn.break-slot {
+  grid-column: 1 / -1;
+  background: #fff9c4;
+  border-color: #f9a825;
+  color: #7a5a00;
+  cursor: default;
+  font-style: italic;
+}
+.slot-time { display: block; font-size: 1rem; }
+.slot-seats {
+  display: block;
+  font-size: .72rem;
+  font-weight: 600;
+  margin-top: 3px;
+  opacity: .75;
+}
+.slot-seats.full { color: #e53935; }
+
+.selected-slot-info {
+  background: var(--green-pale);
+  border: 1.5px solid var(--green-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: .9rem;
+  color: var(--green-dark);
+  text-align: center;
+}
+
+/* ── 15. TOKEN CARD ── */
+.token-card {
+  border-radius: var(--radius-md);
+  border: 2px solid var(--green-accent);
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+}
+
+.token-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+  color: var(--white);
+}
+.token-logo { font-size: 2rem; }
+.token-org  { font-weight: 700; font-size: .9rem; }
+.token-system { font-size: .75rem; opacity: .8; }
+
+.token-divider {
+  height: 1.5px;
+  background: repeating-linear-gradient(90deg,
+    var(--green-accent) 0, var(--green-accent) 8px,
+    transparent 8px, transparent 16px);
+}
+
+.token-number-wrap {
+  text-align: center;
+  padding: 20px 18px 10px;
+}
+.token-label {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-light);
+}
+.token-number {
+  font-family: 'Poppins', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--green-dark);
+  line-height: 1;
+  letter-spacing: -2px;
+  animation: popIn .5s cubic-bezier(.4,0,.2,1) both;
+}
+@keyframes popIn {
+  from { transform: scale(.5); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.token-details {
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.token-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .88rem;
+}
+.td-label {
+  color: var(--text-light);
+  font-weight: 600;
+}
+.td-value {
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.token-footer-note {
+  text-align: center;
+  font-size: .78rem;
+  color: var(--text-light);
+  padding: 10px 18px 14px;
+  font-style: italic;
+}
+
+/* Barcode decorative strip */
+.barcode-strip {
+  height: 36px;
+  background: repeating-linear-gradient(90deg,
+    var(--green-dark)    0, var(--green-dark)    3px,
+    var(--green-main)    3px, var(--green-main)   5px,
+    var(--green-light)   5px, var(--green-light)  6px,
+    transparent          6px, transparent          10px
+  );
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  opacity: .4;
+  margin-bottom: 4px;
+}
+
+/* ── 16. CONFIRMATION PAGE ── */
+.confirm-card { text-align: center; }
+
+/* Animated success circle */
+.success-circle {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto;
+}
+
+.checkmark {
+  width: 90px;
+  height: 90px;
+}
+
+.checkmark-circle {
+  stroke: var(--green-main);
+  stroke-width: 2.5;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: strokeCircle .6s cubic-bezier(.65,0,.45,1) .3s forwards;
+}
+.checkmark-check {
+  stroke: var(--green-main);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: strokeCheck .4s cubic-bezier(.65,0,.45,1) .9s forwards;
+}
+
+@keyframes strokeCircle {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes strokeCheck {
+  to { stroke-dashoffset: 0; }
+}
+
+.confirm-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+.confirm-thank {
+  font-size: 1.5rem;
+  animation: bounce .6s ease both;
+}
+.confirm-msg {
+  font-size: .93rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+}
+
+.confirm-summary {
+  display: inline-block;
+  background: var(--green-pale);
+  border: 1.5px solid var(--green-light);
+  border-radius: var(--radius-pill);
+  padding: 8px 20px;
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.confirm-list {
+  text-align: left;
+  background: var(--off-white);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.confirm-list li {
+  font-size: .9rem;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+
+/* ── 17. PROGRESS DOTS (top of page) ── */
+.progress-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green-accent);
+  transition: background var(--transition), transform var(--transition);
+}
+.dot.active { background: var(--green-main); transform: scale(1.3); }
+.dot.done   { background: var(--green-dark); }
+
+/* ── 18. UTILITY ── */
+.text-center { text-align: center; }
+.mt-sm { margin-top: 8px; }
+.mt-md { margin-top: 16px; }
+
+/* ── 19. RESPONSIVE ADJUSTMENTS ── */
+@media (max-width: 420px) {
+  .app-title { font-size: 1.65rem; }
+  .card { padding: 28px 18px 26px; }
+  .otp-box { width: 38px; height: 46px; font-size: 1.2rem; }
+  .token-number { font-size: 2.8rem; }
+  .lang-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 600px) {
+  .card { padding: 44px 40px 38px; }
+  .app-title { font-size: 2.4rem; }
+}
+
+/* ── 20. SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--green-pale); }
+::-webkit-scrollbar-thumb { background: var(--green-light); border-radius: 99px; }

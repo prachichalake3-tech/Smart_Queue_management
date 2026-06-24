@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Queue Portal</title>
+  <!-- Link to external stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts: Nunito for body, Poppins for headings -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
+</head>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAuREVfcVp_05yppDqFzv0GHQvTiaV677Q",
+    authDomain: "placement-quiz-7d20b.firebaseapp.com",
+    projectId: "placement-quiz-7d20b",
+    storageBucket: "placement-quiz-7d20b.firebasestorage.app",
+    messagingSenderId: "891196478063",
+    appId: "1:891196478063:web:94590cccedcd0e7bb0b39a",
+    measurementId: "G-114CZ1BKGM"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+<body>
+
+  <!-- ========================================================
+       MAIN APP WRAPPER — all pages live inside this div
+  ======================================================== -->
+  <div class="app" id="app">
+
+    <!-- ── FLOATING BACKGROUND ORBS (decorative) ── -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 0 ▸ LANGUAGE SELECTION
+    ══════════════════════════════════════════ -->
+    <section class="page active" id="page-lang">
+      <div class="card">
+        <div class="page-icon">🌐</div>
+        <h2 id="langTitle" class="page-title">Choose Language</h2>
+        <p id="langSub" class="page-sub">Select your preferred language to continue</p>
+
+        <div class="lang-grid" id="langGrid">
+          <div class="lang-card selected" data-lang="en" onclick="selectLang('en')">
+            <span class="lang-flag">🇬🇧</span>
+            <span>English</span>
+          </div>
+          <div class="lang-card" data-lang="mr" onclick="selectLang('mr')">
+            <span class="lang-flag">🇮🇳</span>
+            <span>मराठी</span>
+          </div>
+          <div class="lang-card" data-lang="hi" onclick="selectLang('hi')">
+            <span class="lang-flag">🇮🇳</span>
+            <span>हिन्दी</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="continueFromLang()">
+          <span id="langContinueBtn">Continue →</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 1 ▸ AUTHENTICATION
+    ══════════════════════════════════════════ -->
+    <section class="page" id="page-auth">
+      <div class="card">
+        <div class="auth-tabs">
+          <button id="authLoginBtn" class="tab-btn active" onclick="showAuthSection('login')">Login</button>
+          <button id="authRegisterBtn" class="tab-btn" onclick="showAuthSection('register')">Register</button>
+        </div>
+
+        <div id="loginPanel">
+          <div class="input-group">
+            <label for="loginMobile">Mobile Number</label>
+            <input type="tel" id="loginMobile" class="input-field" placeholder="10-digit mobile number" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')" />
+          </div>
+          <div class="input-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" class="input-field" placeholder="Password" />
+          </div>
+          <button class="btn btn-primary" onclick="loginUser()">Login</button>
+        </div>
+
+        <div id="registerPanel" style="display:none;">
+          <div class="input-group">
+            <label for="registerName">Full Name</label>
+            <input type="text" id="registerName" class="input-field" placeholder="Your name" />
+          </div>
+          <div class="input-group">
+            <label for="registerRole">Role</label>
+            <select id="registerRole" class="input-field">
+              <option value="Customer" selected>Customer</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="registerMobile">Mobile Number</label>
+            <input type="tel" id="registerMobile" class="input-field" placeholder="10-digit mobile number" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'')" />
+          </div>
+          <div class="input-group">
+            <label for="registerPassword">Password</label>
+            <input type="password" id="registerPassword" class="input-field" placeholder="Create a password" />
+          </div>
+          <button class="btn btn-primary" onclick="registerUser()">Register</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 3 ▸ MOBILE & OTP VERIFICATION
+    ══════════════════════════════════════════ -->
+    <section class="page" id="page-otp">
+      <div class="card">
+        <div class="page-icon">📱</div>
+        <h2 id="otpTitle" class="page-title">Verify Mobile</h2>
+        <p id="otpSub" class="page-sub">Enter your 10-digit mobile number to receive OTP</p>
+
+        <!-- Mobile Input -->
+        <div class="input-group">
+          <label id="mobileLabel" for="mobileInput">Mobile Number</label>
+          <div class="input-row">
+            <span class="input-prefix">+91</span>
+            <input
+              type="tel"
+              id="mobileInput"
+              class="input-field"
+              placeholder="Enter 10-digit number"
+              maxlength="10"
+              oninput="this.value=this.value.replace(/\D/g,'')"
+            />
+          </div>
+        </div>
+
+        <!-- Send OTP Button -->
+        <button id="sendOtpBtn" class="btn btn-secondary" onclick="sendOTP()">
+          📤 Send OTP
+        </button>
+
+        <!-- OTP Input (hidden until OTP sent) -->
+        <div class="input-group" id="otpSection" style="display:none;">
+          <label id="otpInputLabel" for="otpInput">Enter OTP</label>
+          <div class="otp-row">
+            <!-- 6 individual OTP boxes -->
+            <input type="tel" class="otp-box" maxlength="1" oninput="otpMove(this,0)"/>
+            <input type="tel" class="otp-box" maxlength="1" oninput="otpMove(this,1)"/>
+            <input type="tel" class="otp-box" maxlength="1" oninput="otpMove(this,2)"/>
+            <input type="tel" class="otp-box" maxlength="1" oninput="otpMove(this,3)"/>
+            <input type="tel" class="otp-box" maxlength="1" oninput="otpMove(this,4)"/>
+            <input type="tel" class="otp-box" maxlength="1" oninput="otpMove(this,5)"/>
+          </div>
+          <p class="otp-hint" id="otpHint">OTP sent! (Demo OTP: <strong>123456</strong>)</p>
+
+          <!-- Countdown timer for resend -->
+          <p class="resend-text" id="resendText">Resend in <span id="countdown">30</span>s</p>
+        </div>
+
+        <button id="continueOtpBtn" class="btn btn-primary" onclick="verifyOTP()" style="display:none;">
+          Verify & Continue →
+        </button>
+        <button id="otpBackBtn" class="btn btn-ghost" onclick="goTo('page-lang')">← Back</button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 5 ▸ RATION AVAILABILITY
+    ══════════════════════════════════════════ -->
+    <section class="page" id="page-availability">
+      <div class="card">
+        <div class="page-icon" id="availIcon">⏳</div>
+        <h2 id="availTitle" class="page-title">Ration Availability</h2>
+        <p id="availSub" class="page-sub">Checking stock at your nearest distribution centre…</p>
+
+        <!-- Availability Status Box -->
+        <div class="status-box" id="statusBox">
+          <div class="status-spinner" id="statusSpinner"></div>
+          <p class="status-text" id="statusText">Checking…</p>
+        </div>
+
+        <!-- Info message -->
+        <div style="text-align:center;color:#666;font-size:0.9rem;margin:16px 0;">
+          <p>🔄 Status updates automatically when admin changes availability.</p>
+        </div>
+
+        <!-- Buttons shown after status loads -->
+        <div id="availButtons" style="display:none;">
+          <button id="availContinueBtn" class="btn btn-primary" onclick="goTo('page-slots')" style="display:none;">
+            Book Time Slot →
+          </button>
+          <button id="retryBtn" class="btn btn-outline" onclick="checkAvailability()" style="display:none;">
+            🔄 Check Again
+          </button>
+        </div>
+
+        <button class="btn btn-ghost" onclick="goTo('page-otp')">← Back</button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 5 ▸ TIME SLOT BOOKING
+    ══════════════════════════════════════════ -->
+    <section class="page" id="page-slots">
+      <div class="card">
+        <div class="page-icon">🕐</div>
+        <h2 id="slotsTitle" class="page-title">Pick a Time Slot</h2>
+        <p id="slotsSub" class="page-sub">Choose a convenient collection window</p>
+
+        <!-- Slot Grid — populated by JS -->
+        <div class="slot-grid" id="slotGrid">
+          <!-- Slots injected by script.js -->
+        </div>
+
+        <!-- Selected slot display -->
+        <div class="selected-slot-info" id="selectedSlotInfo" style="display:none;">
+          <span id="selectedSlotPrefix">✅ Selected:</span> <strong id="selectedSlotLabel">—</strong>
+        </div>
+
+        <button id="slotContinueBtn" class="btn btn-primary" onclick="confirmSlot()" disabled>
+          Confirm Slot →
+        </button>
+        <button id="slotsBackBtn" class="btn btn-ghost" onclick="goTo('page-availability')">← Back</button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 6 ▸ TOKEN GENERATION
+    ══════════════════════════════════════════ -->
+    <section class="page" id="page-token">
+      <div class="card">
+        <div class="page-icon">🎫</div>
+        <h2 id="tokenTitle" class="page-title">Your Token</h2>
+        <p id="tokenSub" class="page-sub">Show this token at the distribution centre</p>
+
+        <!-- Token Card -->
+        <div class="token-card" id="tokenCard">
+          <!-- Decorative header -->
+          <div class="token-header">
+            <span class="token-logo">🌾</span>
+            <div>
+              <p id="tokenOrg" class="token-org">Government Ration Centre</p>
+              <p id="tokenSystem" class="token-system">Smart Queue System</p>
+            </div>
+          </div>
+
+          <div class="token-divider"></div>
+
+          <!-- Token Number — big & bold -->
+          <div class="token-number-wrap">
+            <p id="tokenNumberLabel" class="token-label">Token Number</p>
+            <h1 class="token-number" id="tokenNumber">—</h1>
+          </div>
+
+          <div class="token-divider"></div>
+
+          <!-- Details grid -->
+          <div class="token-details">
+            <div class="token-row">
+              <span id="tokenDateLabel" class="td-label">📅 Date</span>
+              <span class="td-value" id="tDate">—</span>
+            </div>
+            <div class="token-row">
+              <span id="tokenDayLabel" class="td-label">📆 Day</span>
+              <span class="td-value" id="tDay">—</span>
+            </div>
+            <div class="token-row">
+              <span id="tokenMobileLabel" class="td-label">📱 Mobile</span>
+              <span class="td-value" id="tMobile">—</span>
+            </div>
+            <div class="token-row">
+              <span id="tokenSlotLabel" class="td-label">⏰ Slot</span>
+              <span class="td-value" id="tSlot">—</span>
+            </div>
+          </div>
+
+          <div class="token-divider"></div>
+          <p id="tokenFooter" class="token-footer-note">Please arrive 10 minutes before your slot.</p>
+        </div>
+
+        <!-- Barcode strip (decorative) -->
+        <div class="barcode-strip" id="barcodeStrip"></div>
+
+        <button id="tokenConfirmBtn" class="btn btn-primary" onclick="confirmBooking()">
+          Confirm Booking →
+        </button>
+        <button class="btn btn-ghost" onclick="goTo('page-slots')">← Back</button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         PAGE 7 ▸ CONFIRMATION
+    ══════════════════════════════════════════ -->
+    <section class="page" id="page-confirm">
+      <div class="card confirm-card">
+        <!-- Animated checkmark -->
+        <div class="success-circle">
+          <svg class="checkmark" viewBox="0 0 52 52">
+            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="checkmark-check" fill="none" d="M14 27 l8 8 l16-16"/>
+          </svg>
+        </div>
+
+        <h2 id="confirmTitle" class="confirm-title">Booking Successful!</h2>
+        <p id="confirmThank" class="confirm-thank">🙏 Thank You</p>
+
+        <p id="confirmMsg" class="confirm-msg">
+          Your ration slot has been booked successfully.
+          Please carry this token and your Ration Card to the centre.
+        </p>
+
+        <!-- Summary pill -->
+        <div class="confirm-summary">
+          <span id="confirmToken">Token #—</span>
+          &nbsp;|&nbsp;
+          <span id="confirmSlot">—</span>
+        </div>
+
+        <!-- Instructions -->
+        <ul class="confirm-list">
+          <li id="confirmItem1">📄 Carry your Ration Card</li>
+          <li id="confirmItem2">🕐 Arrive before your slot starts</li>
+          <li id="confirmItem3">😷 Follow safety protocols</li>
+          <li id="confirmItem4">📵 Keep your mobile handy for verification</li>
+        </ul>
+
+        <button id="doneButton" class="btn btn-primary" onclick="resetApp()">
+          ✅ Done — Book Another
+        </button>
+      </div>
+    </section>
+
+  </div><!-- end #app -->
+
+  <!-- Firebase compat scripts for local browser use -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../connection.js"></script>
+  <script src="script.js" defer></script>
+</body>
+</html>

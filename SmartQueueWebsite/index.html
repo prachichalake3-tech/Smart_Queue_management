@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Queue Portal</title>
+  <link rel="stylesheet" href="User/style.css" />
+  <style>
+    .landing-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      background: linear-gradient(180deg, #e8f5e9 0%, #ffffff 100%);
+    }
+    .landing-card {
+      max-width: 760px;
+      width: 100%;
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(46,125,50,.16);
+      padding: 40px 32px;
+      text-align: center;
+    }
+      .landing-card h1 {
+        margin-bottom: 16px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        color: #1b5e20;
+      }
+      .landing-header{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:16px;
+        margin-bottom:16px;
+      }
+      .landing-logo{
+        width:96px;
+        height:auto;
+        display:block;
+    }
+    .landing-card p {
+      color: #3d5a3d;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .panel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .panel-card {
+      display: block;
+      background: #f1f8f1;
+      border: 1px solid #dcedc8;
+      border-radius: 22px;
+      padding: 28px;
+      color: #1b5e20;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .panel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 30px rgba(46,125,50,.18);
+    }
+    .panel-card span {
+      display: block;
+      margin-top: 12px;
+      font-size: .95rem;
+      font-weight: 500;
+      color: #3d5a3d;
+    }
+    .landing-note {
+      font-size: .95rem;
+      color: #4a6b4a;
+    }
+  </style>
+</head>
+<body>
+  <div class="landing-page">
+    <div class="landing-card">
+        <div class="landing-header">
+          <img src="assets/logo.png" alt="Smart Queue Portal logo" class="landing-logo" />
+          <h1>Smart Queue Portal</h1>
+        </div>
+      <p>Select your panel to continue. The admin panel is for managing queues, stock, slots, and customer history. The user panel is for registered users to book their slot.</p>
+      <div class="panel-grid">
+        <a class="panel-card" href="admin/admin-login.html">
+          Admin Panel
+          <span>Use admin / admin123 to login</span>
+        </a>
+        <a class="panel-card" href="User/index.html">
+          User Panel
+          <span>Register a new user or login with existing credentials</span>
+        </a>
+      </div>
+      <p class="landing-note">Tip: If your user panel is not logged in yet, register first on the user page.</p>
+    </div>
+  </div>
+</body>
+</html>

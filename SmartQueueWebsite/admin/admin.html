@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Smart Queue Portal</title>
+  <link rel="stylesheet" href="admin.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- ═══════════════════════════════════════════════
+       LOGIN PAGE (shown initially)
+       ═══════════════════════════════════════════════ -->
+  <div id="loginPage" class="login-page active">
+    <div class="login-container">
+      <div class="login-card">
+        <!-- Header -->
+        <div class="login-header">
+          <h1>🌾 Admin Dashboard</h1>
+          <p>Smart Queue Portal</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="handleAdminLogin(event)">
+          <div class="form-group">
+            <label for="adminUsername">Username</label>
+            <input type="text" id="adminUsername" placeholder="Enter username" required />
+          </div>
+
+          <div class="form-group">
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter password" required />
+          </div>
+
+          <button type="submit" class="btn-login">
+            🔐 Login
+          </button>
+
+          <p class="demo-hint">
+            ⚠️ Use admin / admin123 to login to the admin panel.
+          </p>
+        </form>
+
+        <!-- Error Message -->
+        <div id="loginError" class="error-message" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       DASHBOARD PAGE (shown after login)
+       ═══════════════════════════════════════════════ -->
+  <div id="dashboardPage" class="dashboard-page">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>🌾 SQM Admin</h2>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" onclick="showSection('home')">
+          📊 Dashboard
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('stock')">
+          📦 Stock Management
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('slots')">
+          🕐 Time Slots
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('availability')">
+          🔔 Availability
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('customers')">
+          👥 Customer History
+        </a>
+        <a href="#" class="nav-item" onclick="handleLogout()">
+          🚪 Logout
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1>Welcome, Admin!</h1>
+        </div>
+        <div class="topbar-right">
+          <span id="adminName" class="admin-name">Admin</span>
+          <button onclick="handleLogout()" class="btn-logout">Logout</button>
+        </div>
+      </header>
+
+      <!-- CONTENT SECTIONS -->
+      <div class="content">
+
+        <!-- ═══════════════════════════════════
+             SECTION 1: DASHBOARD HOME
+             ═════════════════════════════════ -->
+        <section id="homeSection" class="section active">
+          <h2>Dashboard Overview</h2>
+
+          <!-- Stats Cards Row 1 -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-content">
+                <h3>Total Customers Today</h3>
+                <p class="stat-number" id="totalCustomers">0</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">🎫</div>
+              <div class="stat-content">
+                <h3>Tokens Generated</h3>
+                <p class="stat-number" id="totalTokens">0</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">📦</div>
+              <div class="stat-content">
+                <h3>Available Stock</h3>
+                <p class="stat-number" id="stockStatus">Good</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">🕐</div>
+              <div class="stat-content">
+                <h3>Active Slots</h3>
+                <p class="stat-number" id="activeSlots">0</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Queue Status -->
+          <div class="queue-status">
+            <h3>Today's Queue Status</h3>
+            <div class="queue-info">
+              <div class="queue-item">
+                <span>Current Running Token:</span>
+                <span id="currentToken" class="token-display">T-001</span>
+              </div>
+              <div class="queue-item">
+                <span>Customers in Queue:</span>
+                <span id="queueCount" class="token-display">5</span>
+              </div>
+              <div class="queue-item">
+                <span>Ration Availability:</span>
+                <span id="availStatus" class="status-badge available">Available</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Shortcuts -->
+          <div class="section-cards">
+            <h3>Navigate by Page</h3>
+            <div class="shortcut-grid">
+              <button class="shortcut-card" onclick="showSection('stock')">
+                <span>📦 Stock Management</span>
+                <small>Update inventory and review stock details.</small>
+              </button>
+              <button class="shortcut-card" onclick="showSection('slots')">
+                <span>🕐 Time Slots</span>
+                <small>Create and manage token windows.</small>
+              </button>
+              <button class="shortcut-card" onclick="showSection('availability')">
+                <span>🔔 Availability</span>
+                <small>Set ration availability and customer notice.</small>
+              </button>
+              <button class="shortcut-card" onclick="showSection('customers')">
+                <span>👥 Customer History</span>
+                <small>Search past customer records quickly.</small>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="action-buttons">
+              <button class="action-btn" onclick="showSection('stock')">📦 Update Stock</button>
+              <button class="action-btn" onclick="showSection('availability')">🔔 Set Availability</button>
+              <button class="action-btn" onclick="showSection('slots')">🕐 Manage Slots</button>
+              <button class="action-btn" onclick="refreshDashboard()">🔄 Refresh Data</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════
+             SECTION 2: STOCK MANAGEMENT
+             ═════════════════════════════════ -->
+        <section id="stockSection" class="section">
+          <h2>Stock Management</h2>
+
+          <div class="stock-container">
+            <!-- Stock Items -->
+            <div class="stock-grid">
+              <!-- Wheat -->
+              <div class="stock-card">
+                <h3>🌾 Wheat</h3>
+                <input type="number" id="wheatQty" placeholder="Quantity (kg)" min="0" />
+                <button onclick="updateStock('wheat')">Update</button>
+                <p class="stock-status" id="wheatStatus">Last updated: -</p>
+              </div>
+
+              <!-- Rice -->
+              <div class="stock-card">
+                <h3>🍚 Rice</h3>
+                <input type="number" id="riceQty" placeholder="Quantity (kg)" min="0" />
+                <button onclick="updateStock('rice')">Update</button>
+                <p class="stock-status" id="riceStatus">Last updated: -</p>
+              </div>
+
+              <!-- Sugar -->
+              <div class="stock-card">
+                <h3>🍯 Sugar</h3>
+                <input type="number" id="sugarQty" placeholder="Quantity (kg)" min="0" />
+                <button onclick="updateStock('sugar')">Update</button>
+                <p class="stock-status" id="sugarStatus">Last updated: -</p>
+              </div>
+
+              <!-- Dal -->
+              <div class="stock-card">
+                <h3>🫘 Dal</h3>
+                <input type="number" id="dalQty" placeholder="Quantity (kg)" min="0" />
+                <button onclick="updateStock('dal')">Update</button>
+                <p class="stock-status" id="dalStatus">Last updated: -</p>
+              </div>
+
+              <!-- Oil -->
+              <div class="stock-card">
+                <h3>🛢️ Oil</h3>
+                <input type="number" id="oilQty" placeholder="Quantity (litre)" min="0" />
+                <button onclick="updateStock('oil')">Update</button>
+                <p class="stock-status" id="oilStatus">Last updated: -</p>
+              </div>
+
+              <!-- Festival Kit -->
+              <div class="stock-card">
+                <h3>🎉 Festival Kit</h3>
+                <input type="number" id="kitQty" placeholder="Quantity" min="0" />
+                <button onclick="updateStock('kit')">Update</button>
+                <p class="stock-status" id="kitStatus">Last updated: -</p>
+              </div>
+            </div>
+
+            <!-- Stock Summary -->
+            <div class="stock-summary">
+              <h3>Stock Summary</h3>
+              <table class="stock-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Current Quantity</th>
+                    <th>Unit</th>
+                    <th>Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody id="stockTableBody">
+                  <tr>
+                    <td colspan="4" style="text-align:center;color:#999;">No stock data yet</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════
+             SECTION 3: TIME SLOTS
+             ═════════════════════════════════ -->
+        <section id="slotsSection" class="section">
+          <h2>Time Slot Management</h2>
+
+          <div class="slots-container">
+            <!-- Add New Slot -->
+            <div class="add-slot-form">
+              <h3>Add New Slot</h3>
+              <div class="slot-form-group">
+                <input type="time" id="slotStart" placeholder="Start time" />
+                <input type="time" id="slotEnd" placeholder="End time" />
+                <input type="number" id="slotCapacity" placeholder="Max customers" min="1" />
+                <button onclick="addTimeSlot()">➕ Add Slot</button>
+              </div>
+            </div>
+
+            <!-- Existing Slots -->
+            <div class="slots-list">
+              <h3>Current Slots</h3>
+              <div id="slotsList" class="slots-display">
+                <p class="no-data">No slots created yet. Add a slot above.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════
+             SECTION 4: AVAILABILITY STATUS
+             ═════════════════════════════════ -->
+        <section id="availabilitySection" class="section">
+          <h2>Ration Availability</h2>
+
+          <div class="availability-container">
+            <div class="availability-card">
+              <h3>🔔 Set Current Status</h3>
+              <p style="color:#666;font-size:0.95rem;margin-bottom:16px;">
+                ℹ️ When you change the status below, customers will see it within 1-2 seconds.
+                If "Not Available" is selected, the Continue button will be hidden from customers.
+              </p>
+
+              <div class="status-toggle">
+                <label class="toggle-item">
+                  <input type="radio" name="availability" value="available" onchange="setAvailability('available')" checked />
+                  <span class="toggle-label available-label">✅ Available</span>
+                </label>
+
+                <label class="toggle-item">
+                  <input type="radio" name="availability" value="unavailable" onchange="setAvailability('unavailable')" />
+                  <span class="toggle-label unavailable-label">❌ Not Available</span>
+                </label>
+              </div>
+
+              <p class="availability-status" id="currentAvailability">Current Status: <strong>Available</strong></p>
+
+              <!-- Optional Message -->
+              <div class="message-section">
+                <label style="font-weight:600;">📝 Message for Customers (when not available):</label>
+                <p style="color:#999;font-size:0.9rem;margin-bottom:8px;">
+                  Example: "Ration Not Available. Please try after 2 PM today."
+                </p>
+                <textarea id="availabilityMessage" 
+                  placeholder="e.g., Ration will be available from 2 PM today..." 
+                  rows="3"
+                  style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-family:inherit;"></textarea>
+                <button onclick="saveAvailabilityMessage()" 
+                  style="margin-top:10px;padding:10px 16px;background:#2196F3;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600;">
+                  💾 Save Message
+                </button>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-card">
+              <h3>👁️ Customer Preview</h3>
+              <p style="color:#666;font-size:0.95rem;margin-bottom:12px;">
+                This is what customers will see on their phone:
+              </p>
+              <div id="customerPreview" class="customer-preview">
+                <p>✅ Ration is currently available</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════
+             SECTION 5: CUSTOMER HISTORY
+             ═════════════════════════════════ -->
+        <section id="customersSection" class="section">
+          <h2>Customer History</h2>
+
+          <div class="customers-container">
+            <!-- Search Bar -->
+            <div class="search-bar">
+              <input type="text" id="searchCustomer" placeholder="Search by mobile number or token..." onkeyup="searchCustomers()" />
+            </div>
+
+            <!-- Customers Table -->
+            <table class="customers-table">
+              <thead>
+                <tr>
+                  <th>Token Number</th>
+                  <th>Mobile Number</th>
+                  <th>Time Slot</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="customersTableBody">
+                <tr>
+                  <td colspan="6" style="text-align:center;color:#999;">No customer records yet</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════
+             SECTION 6: SHOP DETAILS
+             ═════════════════════════════════ -->
+        <section id="shopSection" class="section">
+          <h2>Shop Details</h2>
+
+          <div class="shop-container">
+            <form id="shopDetailsForm" onsubmit="saveShopDetails(event)">
+              <input type="hidden" id="shopId" />
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="shopName">Ration Shop Name</label>
+                  <input type="text" id="shopName" placeholder="Government Ration Centre" />
+                </div>
+                <div class="form-group">
+                  <label for="contactNumber">Contact Number</label>
+                  <input type="tel" id="contactNumber" placeholder="9876543210" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="shopAddress">Address</label>
+                <textarea id="shopAddress" placeholder="Enter complete shop address..." rows="3"></textarea>
+              </div>
+
+              <div class="form-group-row">
+                <div class="form-group">
+                  <label for="openingTime">Opening Time</label>
+                  <input type="time" id="openingTime" />
+                </div>
+                <div class="form-group">
+                  <label for="closingTime">Closing Time</label>
+                  <input type="time" id="closingTime" />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" id="saveShopBtn" class="btn-save" onclick="saveShopDetails(event)">💾 Save Shop</button>
+                <button type="button" id="updateShopBtn" class="btn-save" onclick="updateShopDetails(event)" style="display:none;">✏️ Update Shop</button>
+                <button type="button" id="cancelEditShopBtn" class="btn-delete" onclick="cancelShopEdit()" style="display:none;">✖ Cancel</button>
+              </div>
+              <div id="shopFormMessage" class="error-message" style="display:none; margin-top:16px;"></div>
+            </form>
+
+            <div class="shop-list-panel">
+              <h3>Saved Shops</h3>
+              <div id="shopList" class="info-display">
+                <p class="no-data">No shops added yet.</p>
+              </div>
+            </div>
+
+            <!-- Shop Info Display -->
+            <div class="shop-info">
+              <h3>Current Shop Information</h3>
+              <div id="shopInfoDisplay" class="info-display">
+                <p class="no-data">No shop details added yet. Fill the form above.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- end .content -->
+
+    </main>
+
+  </div><!-- end #dashboardPage -->
+
+  <!-- ═══════════════════════════════════════════════
+       TOAST NOTIFICATIONS
+       ═════════════════════════════════════════════ -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Firebase compat scripts for admin -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="../connection.js"></script>
+  <script src="admin.js" defer></script>
+
+</body>
+</html>
